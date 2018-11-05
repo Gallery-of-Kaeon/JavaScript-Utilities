@@ -24,8 +24,17 @@ function open(file) {
 	return allText;
 }
 
+function staticLoad(path) {
+
+    var script = document.createElement("script");
+
+    script.text = open(path);
+    document.head.appendChild(script).parentNode.removeChild(script);
+}
+
 module.exports = {
 
 	getInput,
-	open
+	open,
+	staticLoad
 };

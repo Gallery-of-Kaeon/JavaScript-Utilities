@@ -9,8 +9,13 @@ function open(file) {
 	return fs.readFileSync(file, 'utf8');
 }
 
+function staticLoad(path) {
+
+}
+
 module.exports = {
 
 	getInput,
-	open
+	open,
+	staticLoad
 };
