@@ -9,31 +9,6 @@ function loadStyle(path) {
 	document.head.appendChild(link);
 }
 
-function loadScript(path) {
-
-	let rawFile = new XMLHttpRequest();
-	rawFile.open("GET", file, false);
-
-	let allText = "";
-
-	rawFile.onreadystatechange = function() {
-
-		if(rawFile.readyState === 4) {
-
-			if(rawFile.status === 200 || rawFile.status == 0) {
-				allText = rawFile.responseText;
-			}
-		}
-	}
-
-	rawFile.send(null);
-
-	var script = document.createElement("script");
-	script.text = allText;
-
-	document.head.appendChild(script).parentNode.removeChild(script);
-}
-
 function create(tag, className, id) {
 
 	let element = document.createElement(tag);
@@ -79,7 +54,7 @@ function specify(element, attribute) {
 	}
 
 	else
-		element.appendChild(attribute[0], attribute[1]);
+		element.setAttribute(attribute[0], attribute[1]);
 
 	return element;
 }
