@@ -9,6 +9,31 @@ function loadStyle(path) {
 	document.head.appendChild(link);
 }
 
+function loadScript(path) {
+
+	var rawFile = new XMLHttpRequest();
+	rawFile.open("GET", path, false);
+
+	var allText = "";
+
+	rawFile.onreadystatechange = function() {
+
+		if(rawFile.readyState === 4) {
+
+			if(rawFile.status === 200 || rawFile.status == 0) {
+				allText = rawFile.responseText;
+			}
+		}
+	}
+
+	rawFile.send(null);
+	
+	let script = document.createElement("script");
+	script.text = allText;
+	
+	document.head.appendChild(script).parentNode.removeChild(script);
+}
+
 function create(tag, className, id) {
 
 	let element = document.createElement(tag);
@@ -45,16 +70,28 @@ function extend(element, child) {
 	return element;
 }
 
-function specify(element, attribute) {
+function specify(element, attribute, extend) {
 
-	if(Array.isArray(attribute)) {
+	if(Array.isArray(attribute[0])) {
 
-		for(let i = 0; i < attribute.length; i++)
-			element.setAttribute(attribute[i][0], attribute[i][1]);
+		for(let i = 0; i < attribute.length; i++) {
+		
+			element.setAttribute(
+				attribute[0],
+				extend ?
+					element.getAttribute(attribute[i][0]) + attribute[i][1] :
+					attribute[i][1]);
+		}
 	}
 
-	else
-		element.setAttribute(attribute[0], attribute[1]);
+	else {
+	
+		element.setAttribute(
+			attribute[0],
+			extend ?
+				element.getAttribute(attribute[0]) + attribute[1] :
+				attribute[1]);
+	}
 
 	return element;
 }
@@ -62,6 +99,7 @@ function specify(element, attribute) {
 module.exports = {
 
 	loadStyle,
+	loadScript,
 	create,
 	fill,
 	extend,
