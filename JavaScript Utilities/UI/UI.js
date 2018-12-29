@@ -1,3 +1,21 @@
+function load() {
+	
+	for(let i = 0; i < arguments.length; i++) {
+
+		if(!Array.isArray(arguments[i]))
+			arguments[i] = [arguments[i]];
+
+		for(let j = 0; j < arguments[i].length; j++) {
+
+			if(arguments[i][j].endsWith(".js"))
+				loadScript(arguments[i][j]);
+
+			if(arguments[i][j].endsWith(".css"))
+				loadStyle(arguments[i][j]);
+		}
+	}
+}
+
 function loadStyle(path) {
 	
 	let link = document.createElement("link");
@@ -98,6 +116,7 @@ function specify(element, attribute, extend) {
 
 module.exports = {
 
+	load,
 	loadStyle,
 	loadScript,
 	create,
