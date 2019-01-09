@@ -1,3 +1,5 @@
+var styles = [];
+
 function load() {
 	
 	for(let i = 0; i < arguments.length; i++) {
@@ -62,7 +64,8 @@ function create(tag, className, id) {
 	if(id != null)
 		element.id = id;
 
-	require("./style.js").style(element);
+	for(let i = 0; i < styles.length; i++)
+		styles[i](element);
 
 	return element;
 }
@@ -116,6 +119,7 @@ function specify(element, attribute, extend) {
 
 module.exports = {
 
+	styles,
 	load,
 	loadStyle,
 	loadScript,
