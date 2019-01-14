@@ -98,7 +98,7 @@ function specify(element, attribute, extend) {
 		for(let i = 0; i < attribute.length; i++) {
 		
 			element.setAttribute(
-				attribute[0],
+				attribute[i][0],
 				extend ?
 					element.getAttribute(attribute[i][0]) + attribute[i][1] :
 					attribute[i][1]);
