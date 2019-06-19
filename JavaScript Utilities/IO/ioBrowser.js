@@ -1,4 +1,8 @@
-function getInput() {
+function getInput(query) {
+
+	if(query != null)
+		console.log(query);
+
 	return readline();
 }
 
@@ -24,8 +28,13 @@ function open(file) {
 	return allText;
 }
 
+function save(content, file) {
+	
+}
+
 module.exports = {
 
 	getInput,
-	open
+	open,
+	save
 };
