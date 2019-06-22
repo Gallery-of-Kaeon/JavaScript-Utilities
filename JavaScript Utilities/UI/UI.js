@@ -79,14 +79,10 @@ function fill(element, content) {
 
 function extend(element, child) {
 
-	if(Array.isArray(child)) {
+	child = Array.isArray(child) ? child : [child];
 
-		for(let i = 0; i < child.length; i++)
-			element.appendChild(child[i]);
-	}
-
-	else
-		element.appendChild(child);
+	for(let i = 0; i < child.length; i++)
+		element.appendChild(child[i]);
 
 	return element;
 }
@@ -117,6 +113,99 @@ function specify(element, attribute, extend) {
 	return element;
 }
 
+function setStyle(element, styles) {
+
+	if(!Array.isArray(styles)) {
+	
+		styles = arguments;
+		
+		if(styles.length > 0) {
+		
+			styles.splice(0, 1);
+			
+			if(styles.length == 2)
+				styles = [styles];
+		}
+	}
+	
+	for(let i = 0; i < styles.length; i++) {
+	
+		if(!Array.isArray(styles[i]))
+			styles[i] = [styles[i]];
+	}
+
+	for(let i = 0; i < styles.length; i++) {
+	
+		let style = styles[i][0];
+		let value = styles[i][1];
+	
+		let result =
+			element.style.cssText.match(
+				new RegExp(
+					"(?:[;\\s]|^)(" +
+					style.replace("-", "\\-") +
+					"\\s*:(.*?)(;|$))"
+				)
+			),
+			index;
+		
+		if (result) {
+		
+			index = result.index + result[0].indexOf(result[1]);
+			
+			element.style.cssText =
+				element.style.cssText.substring(0, index) +
+				style + ": " + value + ";" +
+				element.style.cssText.substring(index + result[1].length);
+		}
+		
+		else
+			element.style.cssText += " " + style + ": " + value + ";";
+	}
+		
+	return element;
+}
+
+function get(id, className, tag) {
+
+	if(id != null)
+		return document.getElementById(id);
+	
+	if(className != null)
+		return document.getElementsByClassName(className);
+	
+	if(tag != null)
+		return document.getElementsByTagName(tag);
+}
+
+function isVisible(element) {
+    return !!(element.offsetWidth || element.offsetHeight || element.getClientRects().length);
+}
+
+function interpolate(value, target, increment) {
+	
+	if(value == target)
+		return value;
+
+	if(value < target) {
+
+		value += increment;
+		
+		if(value > target)
+			value = target;
+	}
+	
+	else if(value > target) {
+		
+		value -= increment;
+		
+		if(value < target)
+			value = target;
+	}
+
+	return value;
+}
+
 module.exports = {
 
 	styles,
@@ -126,5 +215,9 @@ module.exports = {
 	create,
 	fill,
 	extend,
-	specify
+	specify,
+	setStyle,
+	get,
+	isVisible,
+	interpolate
 };
