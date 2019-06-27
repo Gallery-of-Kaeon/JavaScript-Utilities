@@ -29,7 +29,21 @@ function open(file) {
 }
 
 function save(content, file) {
-	
+
+	let element = document.createElement('a');
+
+	element.setAttribute(
+		'href',
+		'data:text/plain;charset=utf-8,' + encodeURIComponent(content));
+
+	element.setAttribute('download', file);
+
+	element.style.display = 'none';
+	document.documentElement.appendChild(element);
+
+	element.click();
+
+	document.documentElement.removeChild(element);
 }
 
 module.exports = {
