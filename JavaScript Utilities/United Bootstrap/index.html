@@ -1,0 +1,179 @@
+<!-- [host_link]?path=[this_link][&unitedJS=[resource_link]][&unitedOP=[resource_link]] -->
+
+<!DOCTYPE html>
+
+<html>
+
+	<head>
+
+		<script>
+
+			var module = {
+				id: '.',
+				exports: { },
+				parent: null,
+				filename: "",
+				loaded: false,
+				children: [],
+				paths: []
+			};
+
+			function require(path) {
+
+				require.cache = require.cache ? require.cache : [[], []];
+
+				if(module.parent != null) {
+
+					if(path.startsWith(".")) {
+
+						path =
+							module.filename.substring(0, module.filename.lastIndexOf('/') + 1) +
+							path;
+					}
+				}
+
+				let lowerPath = path.toLowerCase();
+
+				while(lowerPath.startsWith("././"))
+					lowerPath = lowerPath.substring(2);
+
+				let index = require.cache[0].indexOf(lowerPath);
+
+				if(index == -1) {
+
+					let cors_api_url = 'https://cors-anywhere.herokuapp.com/';
+
+					let rawFile = new XMLHttpRequest();
+					rawFile.open("GET", cors_api_url + path, false);
+
+					let allText = "";
+
+					rawFile.onreadystatechange = function() {
+
+						if(rawFile.readyState === 4) {
+
+							if(rawFile.status === 200 || rawFile.status == 0)
+								allText = rawFile.responseText;
+						}
+					}
+
+					rawFile.send(null);
+
+					let newModule = {
+						id: path,
+						exports: { },
+						parent: module,
+						filename: path,
+						loaded: false,
+						children: [],
+						paths: []
+					};
+
+					require.cache[0].push(lowerPath);
+					require.cache[1].push(newModule);
+
+					let newModuleContents = (
+						new Function(
+							"var module = arguments[0];" +
+							require.toString() +
+							"require.cache = arguments[1];" +
+							allText +
+							";return module;"
+						)
+					)(newModule, require.cache);
+
+					for(key in newModuleContents)
+						newModule.exports[key] = newModuleContents.exports[key];
+
+					module.children.push(newModule);
+
+					newModule.loaded = true;
+
+					return newModule.exports;
+				}
+
+				else
+					return require.cache[1][index].exports;
+			}
+
+			let vars = {};
+
+			window.location.href.replace(
+				/[?&]+([^=&]+)=([^&]*)/gi,
+				function(m, key, value) {
+					vars[key] = value;
+				}
+			);
+
+			let uriJS = vars["unitedJS"];
+
+			if(uriJS != null) {
+
+				if(uriJS.includes("%"))
+					uriJS = decodeURIComponent(uriJS);
+
+				let rawFile = new XMLHttpRequest();
+				rawFile.open("GET", 'https://cors-anywhere.herokuapp.com/' + uriJS, false);
+
+				let allText = "";
+
+				rawFile.onreadystatechange = function() {
+
+					if(rawFile.readyState === 4) {
+
+						if(rawFile.status === 200 || rawFile.status == 0)
+							allText = rawFile.responseText;
+					}
+				}
+
+				rawFile.send(null);
+
+				eval(allText);
+			}
+
+			let uriOP = vars["unitedOP"];
+
+			if(uriOP != null) {
+
+				if(uriOP.includes("%"))
+					uriOP = decodeURIComponent(uriOP);
+
+				let rawFile = new XMLHttpRequest();
+				rawFile.open("GET", 'https://cors-anywhere.herokuapp.com/' + uriOP, false);
+
+				let allText = "";
+
+				rawFile.onreadystatechange = function() {
+
+					if(rawFile.readyState === 4) {
+
+						if(rawFile.status === 200 || rawFile.status == 0)
+							allText = rawFile.responseText;
+					}
+				}
+
+				rawFile.send(null);
+
+				for(let i = 0; i < allText.length; i++) {
+
+					if(allText.charCodeAt(i) == 13) {
+						allText = allText.substring(0, i) + allText.substring(i + 1);
+						i--;
+					}
+				}
+
+				let kaeonFUSION = require("");
+				let fusion = new kaeonFUSION.KaeonFUSION();
+
+				fusion.process(require("").readONEPlus(allText));
+			}
+
+		</script>
+
+	</head>
+
+	<body>
+
+	</body>
+	
+</html>
