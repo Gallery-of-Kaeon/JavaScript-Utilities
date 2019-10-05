@@ -1,5 +1,5 @@
-var one = require("");
-var tokenizer = require("");
+var one = require("https://raw.githubusercontent.com/Gallery-of-Kaeon/Kaeon-FUSION/master/Kaeon%20FUSION/APIs/ONE/JavaScript/ONE.js");
+var tokenizer = require("https://raw.githubusercontent.com/Gallery-of-Kaeon/Kaeon-FUSION/master/Kaeon%20FUSION/APIs/Tokenizer/JavaScript/tokenizer.js");
 
 function readONEPlus(data) {
 

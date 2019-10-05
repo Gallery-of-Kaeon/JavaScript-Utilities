@@ -1,38 +1,18 @@
 // DEPENDENCIES
 
-var one = require("");
-var fusion = require("");
-var philosophersStone = require("");
-var onePlus = require("");
+var one = require("https://raw.githubusercontent.com/Gallery-of-Kaeon/Kaeon-FUSION/master/Kaeon%20FUSION/APIs/ONE/JavaScript/ONE.js");
+var fusion = require("https://raw.githubusercontent.com/Gallery-of-Kaeon/JavaScript-Utilities/master/JavaScript%20Utilities/United%20Bootstrap/FUSION.js");
+var philosophersStone = require("https://raw.githubusercontent.com/Gallery-of-Kaeon/Philosophers-Stone/master/Philosopher's%20Stone/API/JavaScript/PhilosophersStone.js");
+var onePlus = require("https://raw.githubusercontent.com/Gallery-of-Kaeon/JavaScript-Utilities/master/JavaScript%20Utilities/United%20Bootstrap/ONEPlus.js");
 
-var io = require("");
-var tokenizer = require("");
+var io = require("https://raw.githubusercontent.com/Gallery-of-Kaeon/JavaScript-Utilities/master/JavaScript%20Utilities/IO/ioBrowser.js");
+var tokenizer = require("https://raw.githubusercontent.com/Gallery-of-Kaeon/Kaeon-FUSION/master/Kaeon%20FUSION/APIs/Tokenizer/JavaScript/tokenizer.js");
 
 var fs = {};
 var path = {};
 var cmd = {};
 
-try {
-	fs = require("fs");
-	path = require("path");
-	cmd = require("node-cmd");
-}
-
-catch(error) {
-
-}
-
 var platform = "Browser";
-
-if(typeof process === 'object') {
-
-	if(typeof process.versions === 'object') {
-
-		if(typeof process.versions.node !== 'undefined') {
-			platform = "Node";
-		}
-	}
-}
 
 // USE OVERRIDE STONE
 
