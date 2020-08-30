@@ -88,7 +88,32 @@ function getVoices() {
 
 	voiceList.sort();
 
-	return voiceList;
+	if(voiceList.length > 0)
+		return voiceList;
+
+	return [
+		"Google Bahasa Indonesia",
+		"Google Deutsch",
+		"Google Nederlands",
+		"Google UK English Female",
+		"Google UK English Male",
+		"Google US English",
+		"Google español",
+		"Google español de Estados Unidos",
+		"Google français",
+		"Google italiano",
+		"Google polski",
+		"Google português do Brasil",
+		"Google русский",
+		"Google हिन्दी",
+		"Google 國語（臺灣）",
+		"Google 日本語",
+		"Google 한국의",
+		"Google 普通话（中国大陆）",
+		"Google 粤語（香港）",
+		"Microsoft David Desktop - English (United States)",
+		"Microsoft Zira Desktop - English (United States)"
+	];
 }
 
 module.exports = {
