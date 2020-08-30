@@ -105,6 +105,8 @@ function create(object) {
 }
 
 function set(element, object) {
+
+	object = object != null ? object : { };
 	
 	if(object.tag != null && object.tag != element.tagName)
 		element = document.createElement(object.tag);
