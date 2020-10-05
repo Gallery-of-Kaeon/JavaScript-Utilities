@@ -3,7 +3,7 @@
 var one = require("https://raw.githubusercontent.com/Gallery-of-Kaeon/Kaeon-FUSION/master/Kaeon%20FUSION/APIs/ONE/JavaScript/ONE.js");
 var fusion = require("https://raw.githubusercontent.com/Gallery-of-Kaeon/JavaScript-Utilities/master/JavaScript%20Utilities/United%20Bootstrap/FUSION.js");
 var philosophersStone = require("https://raw.githubusercontent.com/Gallery-of-Kaeon/Philosophers-Stone/master/Philosopher's%20Stone/API/JavaScript/PhilosophersStone.js");
-var onePlus = require("https://raw.githubusercontent.com/Gallery-of-Kaeon/JavaScript-Utilities/master/JavaScript%20Utilities/United%20Bootstrap/ONEPlus.js");
+var oneSuite = require("https://raw.githubusercontent.com/Gallery-of-Kaeon/JavaScript-Utilities/master/JavaScript%20Utilities/United%20Bootstrap/ONESuite.js");
 
 var io = require("https://raw.githubusercontent.com/Gallery-of-Kaeon/JavaScript-Utilities/master/JavaScript%20Utilities/IO/ioBrowser.js");
 var tokenizer = require("https://raw.githubusercontent.com/Gallery-of-Kaeon/Kaeon-FUSION/master/Kaeon%20FUSION/APIs/Tokenizer/JavaScript/tokenizer.js");
@@ -1350,6 +1350,37 @@ function direct() {
 	}
 }
 
+function inject() {
+
+	philosophersStone.abide(this, new fusion.FUSIONUnit());
+
+	this.verify = function(element) {
+		return element.content.toLowerCase() == "inject";
+	}
+
+	this.process = function(element, processed) {
+
+		if(element.parent == null)
+			return null;
+
+		let injection = null;
+
+		if(Array.isArray(processed[0]))
+			injection = one.toElement(processed[0]);
+
+		else
+			injection = one.toElement(oneSuite.parse("" + processed[0]));
+
+		element.content = injection.content;
+		element.children = injection.children;
+
+		for(let i = 0; i < element.children.length; i++)
+			element.children[i].parent = element;
+
+		return null;
+	}
+}
+
 function returnCommand() {
 
 	philosophersStone.abide(this, new fusion.FUSIONUnit());
@@ -1554,7 +1585,7 @@ function execute() {
 				}
 			}
 
-			reference.fusion.internalProcess(onePlus.readONEPlus(data), true);
+			reference.fusion.internalProcess(one.toElement(oneSuite.parse(data)), true);
 		}
 
 		return null;
@@ -3181,7 +3212,7 @@ function elementToList() {
 			}
 		}
 
-		return one.toList(onePlus.readONEPlus(data));
+		return one.toList(one.toElement(oneSuite.parse(data)));
 	}
 }
 
@@ -5052,6 +5083,7 @@ module.exports = function(fusion) {
 	philosophersStone.connect(fusion, new be(), [], true);
 	philosophersStone.connect(fusion, new call(), [], true);
 	philosophersStone.connect(fusion, new direct(), [], true);
+	philosophersStone.connect(fusion, new inject(), [], true);
 	
 	philosophersStone.connect(fusion, new returnCommand(), [], true);
 	philosophersStone.connect(fusion, new catchCommand(), [], true);

@@ -5,12 +5,12 @@ function getPlatform() {
 		if(typeof process.versions === 'object') {
 
 			if(typeof process.versions.node !== 'undefined') {
-				platform = "Node";
+				return "node";
 			}
 		}
 	}
 
-	return "Browser";
+	return "browser";
 }
 
 module.exports = {
