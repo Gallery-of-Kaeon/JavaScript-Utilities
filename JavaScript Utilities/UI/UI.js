@@ -1,3 +1,6 @@
+var scriptEngine = null;
+var selectorRules = { };
+
 function load() {
 
 	load.cache = load.cache != null ? load.cache : [];
@@ -53,15 +56,15 @@ function loadScript(path) {
 
 	rawFile.send(null);
 
-	injectStyle(allText);
+	inject("script", allText);
 }
 
-function injectStyle(style) {
+function inject(type, content) {
 	
-	let script = document.createElement("script");
-	script.text = style;
+	let injection = document.createElement(type);
+	injection.text = content;
 	
-	document.head.appendChild(script).parentNode.removeChild(script);
+	document.head.appendChild(injection).parentNode.removeChild(injection);
 }
 
 function setStyle(element, styles) {
@@ -126,6 +129,9 @@ function set(element, object) {
 
 	if(object.style != null)
 		setStyle(element, object.style);
+
+	if(object.fields != null)
+		Object.assign(element, object.fields);
 
 	if(object.children != null) {
 
@@ -266,12 +272,61 @@ function isVisible(element) {
 	);
 }
 
+function startScriptEngine() {
+
+	stopScriptEngine();
+
+	scriptEngine = setInterval(
+		() => {
+
+			document.querySelectorAll("*").forEach((element) => {
+
+				if(!element.scriptEngineInitialized) {
+
+					if(element.onStart != null)
+						element.onStart(element);
+
+					element.scriptEngineInitialized = true;
+				}
+
+				if(element.onUpdate != null)
+					element.onUpdate(element);
+			});
+
+			Object.keys(selectorRules).forEach((key) => {
+
+				document.querySelectorAll(key).forEach((element) => {
+
+					if(!element.selectorRuleInitialized) {
+	
+						set(element, selectorRules[key]);
+	
+						element.selectorRuleInitialized = true;
+					}
+				});
+			});
+		},
+		1000 / 60
+	)
+}
+
+function stopScriptEngine() {
+
+	if(scriptEngine == null)
+		return;
+
+	clearInterval(scriptEngine);
+
+	scriptEngine = null;
+}
+
 module.exports = {
 
+	selectorRules,
 	load,
 	loadStyle,
 	loadScript,
-	injectStyle,
+	inject,
 	create,
 	set,
 	get,
@@ -281,5 +336,7 @@ module.exports = {
 	toElement,
 	toCSS,
 	toStyle,
-	isVisible
+	isVisible,
+	startScriptEngine,
+	stopScriptEngine,
 };
