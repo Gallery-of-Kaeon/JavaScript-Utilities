@@ -1,5 +1,3 @@
-var CORSProxy = "https://cors-anywhere.herokuapp.com/";
-
 function getPlatform() {
 
 	if(typeof process === 'object') {
@@ -136,8 +134,14 @@ function sendRequest(request, callback) {
 
 		call = new XMLHttpRequest();
 
-		if(CORSProxy != null)
-			request.request.uri = CORSProxy + request.request.uri;
+		if(module.exports.CORSProxy != null && !(
+			request.request.uri.startsWith("http://localhost") ||
+			request.request.uri.startsWith("https://localhost") ||
+			request.request.uri.startsWith("http://127.0.0.1") ||
+			request.request.uri.startsWith("https://127.0.0.1"))) {
+
+			request.request.uri = module.exports.CORSProxy + request.request.uri;
+		}
 	}
 
 	call.open(request.request.method, request.request.uri, callback != null);
@@ -190,7 +194,7 @@ function sendRequest(request, callback) {
 }
 
 module.exports = {
-	CORSProxy,
+	CORSProxy: "https://cors-anywhere.herokuapp.com/",
 	getURLArguments,
 	toHTTP,
 	toJSON,
