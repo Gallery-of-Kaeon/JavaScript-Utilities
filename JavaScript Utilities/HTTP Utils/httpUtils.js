@@ -1,3 +1,5 @@
+var CORSProxy = "https://cors-anywhere.herokuapp.com/";
+
 function getPlatform() {
 
 	if(typeof process === 'object') {
@@ -13,7 +15,7 @@ function getPlatform() {
 	return "browser";
 }
 
-module.exports.getURLArguments = function(url) {
+function getURLArguments(url) {
 
 	let vars = {};
 
@@ -27,7 +29,7 @@ module.exports.getURLArguments = function(url) {
 	return vars;
 }
 
-module.exports.toHTTP = function(json) {
+function toHTTP(json) {
 
 	let http = "";
 
@@ -66,7 +68,7 @@ module.exports.toHTTP = function(json) {
 	return http;
 }
 
-module.exports.toJSON = function(http) {
+function toJSON(http) {
 
 	let json = { };
 
@@ -123,106 +125,74 @@ module.exports.toJSON = function(http) {
 	return json;
 }
 
-if(getPlatform() == "node") {
+function sendRequest(request, callback) {
 
-	var unirest = require("unirest");
+	let call = null;
 
-	var getResponse = function(res) {
+	if(getPlatform() == "node")
+		call = new (require("xmlhttprequest").XMLHttpRequest)();
+		
+	else {
 
-		if(res.caseless != null)
-			Object.assign(res.headers, res.caseless.dict);
+		call = new XMLHttpRequest();
 
-		let responseBody = res.raw_body;
-
-		if(typeof responseBody == "object")
-			responseBody = JSON.stringify(responseBody);
-
-		return {
-			response: {
-				version: "",
-				status: res.status
-			},
-			headers: res.headers,
-			body: responseBody
-		}
+		if(CORSProxy != null)
+			request.request.uri = CORSProxy + request.request.uri;
 	}
 
-	module.exports.sendRequest = async function(request, callback) {
+	call.open(request.request.method, request.request.uri, callback != null);
 
-		if(callback == null) {
+	if(request.headers != null) {
+		
+		let keys = Object.keys(request.headers);
 
-			var response = { };
-
-			await unirest(request.request.method, request.request.uri).
-				headers(request.headers != null ? request.headers : { }).
-				strictSSL(false).send(request.body != null ? request.body : "").
-				then((res) => {
-					response = getResponse(res);
-				});
-
-			return response;
-		}
-
-		unirest(request.request.method, request.request.uri).
-			headers(request.headers != null ? request.headers : { }).
-			strictSSL(false).send(request.body != null ? request.body : "").
-			then((res) => {
-				callback(getResponse(res));
-			});
-
-		return null;
+		for(let i = 0; i < keys.length; i++)
+			call.setRequestHeader(keys[i], request.headers[keys[i]]);
 	}
-}
+	
+	var response = {
+		response: { version: "", status: "" },
+		headers: { },
+		body: ""
+	};
+	
+	call.onreadystatechange = function() {
+	
+		if(call.readyState === 4) {
 
-else {
+			response.response.status = call.status;
 
-	var getResponse = async function(res) {
+			let headers = call.getAllResponseHeaders().trim();
 
-		return {
-			response: {
-				version: "",
-				status: res.status
-			},
-			headers: res.headers,
-			body: await res.text()
-		};
-	}
+			if(headers != null) {
 
-	module.exports.sendRequest = async function(request, callback) {
+				headers = headers.split("\r\n");
 
-		if(callback == null) {
+				for(let i = 0; i < headers.length; i++) {
 
-			var response = { };
+					let header = headers[i].split(":");
 
-			await fetch(
-				request.request.uri,
-				{
-					method: request.request.method,
-					headers: request.headers,
-					body: request.body
+					response.headers[header[0].trim()] = header[1].trim();
 				}
-			).then((res) => {
-				return getResponse(res);
-			}).then((res) => {
-				response = res;
-			});
-
-			return response;
-		}
-
-		fetch(
-			request.request.uri,
-			{
-				method: request.request.method,
-				headers: request.headers,
-				body: request.body
 			}
-		).then((res) => {
-			return getResponse(res);
-		}).then((res) => {
-			callback(res);
-		});
+	
+			response.body = call.responseText;
 
-		return null;
+			if(callback != null)
+				callback(response);
+		}
 	}
+	
+	call.send(request.body);
+	
+	if(callback == null)
+		return response;
 }
+
+module.exports = {
+	CORSProxy,
+	getURLArguments,
+	toHTTP,
+	toJSON,
+	sendRequest
+};
