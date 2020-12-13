@@ -159,6 +159,9 @@ function set(element, object) {
 
 function get(element) {
 
+	if(typeof element == "string")
+		return Array.from(document.querySelectorAll(element));
+
 	let object = {
 		tag: element.tagName
 	}
@@ -214,13 +217,22 @@ function extend(element, children) {
 	return element;
 }
 
-function remove(element) {
+function remove() {
 
-	if(element.parentNode != null)
-		element.parentNode.removeChild(element);
+	Array.from(arguments).forEach((element) => {
 
-	else
-		element.innerHTML = "";
+		if(typeof element == "string")
+			document.querySelectorAll(element).forEach((item) => {remove(item);});
+	
+		else if(Array.isArray(element))
+			element.forEach((item) => { remove(item); });
+	
+		else if(element.parentNode != null)
+			element.parentNode.removeChild(element);
+	
+		else
+			element.innerHTML = "";
+	});
 }
 
 function toHTML(object) {
