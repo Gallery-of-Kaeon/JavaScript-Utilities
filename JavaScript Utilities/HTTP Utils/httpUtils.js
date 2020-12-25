@@ -125,6 +125,9 @@ function toJSON(http) {
 
 function sendRequest(request, callback) {
 
+	if(typeof request == "string")
+		request = toJSON(request);
+
 	let call = null;
 
 	if(getPlatform() == "node")
