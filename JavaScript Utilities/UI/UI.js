@@ -104,6 +104,10 @@ function setStyle(element, styles) {
 }
 
 function create(object) {
+
+	if(typeof object == "string")
+		object = toElement(object);
+
 	return set(document.createElement("div"), object);
 }
 
@@ -207,12 +211,27 @@ function get(element) {
 	return object;
 }
 
-function extend(element, children) {
+function extend(element) {
 
-	children = Array.isArray(children) ? children : [children];
+	let children = [];
 
-	for(let i = 0; i < children.length; i++)
-		element.appendChild(children[i]);
+	for(let i = 1; i < arguments.length; i++) {
+
+		children = children.concat(
+			Array.isArray(arguments[i]) ?
+				arguments[i] :
+				[arguments[i]]
+		);
+	}
+
+	for(let i = 0; i < children.length; i++) {
+
+		if(children[i].ENTITY_NODE != null)
+			element.appendChild(children[i]);
+
+		else
+		 	element.appendChild(create(children[i]));
+	}
 
 	return element;
 }
