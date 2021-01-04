@@ -46,7 +46,7 @@ if(platform == "node") {
 
 			if(file.startsWith("http://") || file.startsWith("https://")) {
 				
-				var rawFile = new require("xmlhttprequest").XMLHttpRequest();
+				var rawFile = new (require("xmlhttprequest").XMLHttpRequest)();
 				rawFile.open("GET", file, false);
 				
 				var allText = "";
