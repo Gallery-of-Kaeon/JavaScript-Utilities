@@ -137,22 +137,27 @@ function set(element, object) {
 	if(object.fields != null)
 		Object.assign(element, object.fields);
 
-	if(object.children != null) {
+	if(object.content != null) {
+
+		object.content =
+			Array.isArray(object.content) ?
+				object.content :
+				[object.content];
 
 		element.innerHTML = "";
 
-		for(let i = 0; i < object.children.length; i++) {
+		for(let i = 0; i < object.content.length; i++) {
 
-			if(object.children[i].nodeName != null)
-				element.appendChild(object.children[i]);
+			if(object.content[i].nodeName != null)
+				element.appendChild(object.content[i]);
 
-			else if(typeof object.children[i] == "object")
-				element.appendChild(create(object.children[i]));
+			else if(typeof object.content[i] == "object")
+				element.appendChild(create(object.content[i]));
 
 			else {
 
 				element.appendChild(
-					document.createTextNode("" + object.children[i])
+					document.createTextNode("" + object.content[i])
 				);
 			}
 		}
@@ -196,15 +201,15 @@ function get(element) {
 
 	if(element.childNodes.length > 0) {
 
-		object.children = [];
+		object.content = [];
 		
 		for(let i = 0; i < element.childNodes.length; i++) {
 
 			if(element.childNodes[i].nodeName == "#text")
-				object.children.push(element.childNodes[i].textContent);
+				object.content.push(element.childNodes[i].textContent);
 
 			else if(element.childNodes[i].tagName != null)
-				object.children.push(get(element.childNodes[i]));
+				object.content.push(get(element.childNodes[i]));
 		}
 	}
 
@@ -214,14 +219,23 @@ function get(element) {
 function extend(element) {
 
 	let children = [];
+	let index = arguments.length == 1 ? 0 : 1;
 
-	for(let i = 1; i < arguments.length; i++) {
+	for(let i = index; i < arguments.length; i++) {
 
 		children = children.concat(
 			Array.isArray(arguments[i]) ?
 				arguments[i] :
 				[arguments[i]]
 		);
+	}
+
+	if(arguments.length == 1) {
+
+		if(document.body != null)
+			document.body.style.position = "absolute";
+
+		element = document.documentElement;
 	}
 
 	for(let i = 0; i < children.length; i++) {
