@@ -11,7 +11,7 @@ function getDropItem(input, dropdown, value, onSelect) {
 				width: "100%",
 				border: "solid 1px black"
 			},
-			children: [
+			content: [
 				value
 			]
 		}
@@ -67,7 +67,7 @@ function createSearch(getOptions, onSelect) {
 		{
 			tag: "button",
 			attributes: { class: "search-button" },
-			children: [
+			content: [
 				"Go"
 			]
 		}
@@ -120,7 +120,7 @@ function createSearch(getOptions, onSelect) {
 	let search = ui.create(
 		{
 			attributes: { class: "search-container" },
-			children: [input, go, dropdown]
+			content: [input, go, dropdown]
 		}
 	);
 

@@ -16,7 +16,7 @@ function createStartScreen(element, text, callback) {
 				"border-radius": "25px",
 				font: "bold 100% arial"
 			},
-			children: [
+			content: [
 				text
 			]
 		}
@@ -42,7 +42,7 @@ function createStartScreen(element, text, callback) {
 					height: "100%",
 					background: "black"
 				},
-				children: [
+				content: [
 					button
 				]
 			}
