@@ -16,7 +16,7 @@ function getXMLHTTP(url) {
 
 	var rawFile = new XMLHttpRequest();
 
-	rawFile.open("GET", path, false);
+	rawFile.open("GET", url, false);
 
 	rawFile.setRequestHeader("Origin", "https://www.abc_" + Math.random() + ".com");
 
