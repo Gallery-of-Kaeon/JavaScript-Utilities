@@ -10,12 +10,15 @@ if(typeof process === 'object') {
 	}
 }
 
-var cors_api_url = 'https://cors-anywhere.herokuapp.com/';
+var cors_api_url = 'https://stormy-beach-14823.herokuapp.com/';
 
 function getXMLHTTP(url) {
 
 	var rawFile = new XMLHttpRequest();
-	rawFile.open("GET", url, false);
+
+	rawFile.open("GET", path, false);
+
+	rawFile.setRequestHeader("Origin", "https://www.abc_" + Math.random() + ".com");
 
 	var allText = "";
 

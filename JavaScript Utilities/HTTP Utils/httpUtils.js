@@ -144,6 +144,12 @@ function sendRequest(request, callback) {
 			request.request.uri.startsWith("https://127.0.0.1"))) {
 
 			request.request.uri = module.exports.CORSProxy + request.request.uri;
+
+			if(request.headers == null)
+				request.headers = { };
+				
+			if(request.headers["Origin"] == null)
+				request.headers["Origin"] = "https://www.abc_" + Math.random() + ".com";
 		}
 	}
 
