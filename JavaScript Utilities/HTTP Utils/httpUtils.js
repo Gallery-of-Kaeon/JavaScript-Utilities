@@ -203,7 +203,7 @@ function sendRequest(request, callback) {
 }
 
 module.exports = {
-	CORSProxy: "https://cors-anywhere.herokuapp.com/",
+	CORSProxy: "https://stormy-beach-14823.herokuapp.com/",
 	getURLArguments,
 	toHTTP,
 	toJSON,
