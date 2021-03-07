@@ -80,6 +80,10 @@ function onSend(callback) {
 		onreadystatechange() {
 				
 		}
+
+		addEventListener(type, listener) {
+			this.XMLHttpRequest.addEventListener(type, listener);
+		}
 	}
 
 	window.fetch = (uri, options) => {
