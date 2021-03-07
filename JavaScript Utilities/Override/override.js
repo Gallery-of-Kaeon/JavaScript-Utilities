@@ -46,10 +46,19 @@ function onSend(callback) {
 
 			let response = callback(this.request);
 
-			if(response != null)
-				return response;
+			if(response != null) {
 
-			super.send(body);
+				this.readyState = 4;
+				this.status = 200;
+
+				this.responseText = "" + response;
+
+				if(this.onreadystatechange != null)
+					this.onreadystatechange();
+			}
+
+			else
+				super.send(body);
 		}
 	}
 
