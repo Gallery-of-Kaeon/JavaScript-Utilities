@@ -22,7 +22,7 @@ function onSend(callback) {
 				body: null
 			};
 
-			Object.assign(this.XMLHttpRequest, Object.create(new defaultXMLHttpRequest()));
+			Object.assign(this, Object.create(new defaultXMLHttpRequest()));
 		}
 
 		open(method, uri, sync) {
@@ -48,7 +48,7 @@ function onSend(callback) {
 
 			if(response != null)
 				return response;
-				
+
 			this.send(body);
 		}
 	}
