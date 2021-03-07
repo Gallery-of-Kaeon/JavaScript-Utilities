@@ -48,10 +48,20 @@ function onSend(callback) {
 
 			if(response != null) {
 
-				this.readyState = 4;
-				this.status = 200;
+				Object.defineProperty(this, 'readyState', {
+					value: 4,
+					writable: true
+				});
 
-				this.responseText = "" + response;
+				Object.defineProperty(this, 'status', {
+					value: 200,
+					writable: true
+				});
+
+				Object.defineProperty(this, 'responseText', {
+					value: "" + response,
+					writable: true
+				});
 
 				if(this.onreadystatechange != null)
 					this.onreadystatechange();
