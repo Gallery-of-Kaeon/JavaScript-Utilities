@@ -22,12 +22,7 @@ function onSend(callback) {
 				body: null
 			};
 
-			this.XMLHttpRequest = new defaultXMLHttpRequest();
-
-			this.readyState = 0;
-			this.status = 0;
-
-			this.responseText = "";
+			Object.assign(this.XMLHttpRequest, Object.create(new defaultXMLHttpRequest()));
 		}
 
 		open(method, uri, sync) {
@@ -35,58 +30,26 @@ function onSend(callback) {
 			this.request.request.method = method;
 			this.request.request.uri = uri;
 
-			this.XMLHttpRequest.open(method, uri, sync);
+			this.open(method, uri, sync);
 		}
 
 		setRequestHeader(name, value) {
 
 			this.request.headers[name] = value;
 
-			this.XMLHttpRequest.setRequestHeader(name, value);
+			this.setRequestHeader(name, value);
 		}
 
 		send(body) {
 
 			this.request.body = body;
 
-			let response = callback(this.request)
+			let response = callback(this.request);
 
-			if(response != null) {
-
-				this.readyState = 4;
-				this.status = 200;
-
-				this.responseText = "" + response;
-
-				if(this.onreadystatechange != null)
-					this.onreadystatechange();
-
-				return;
-			}
-
-			this.XMLHttpRequest.onreadystatechange = () => {
-
-				this.readyState = this.XMLHttpRequest.readyState;
-				this.status = this.XMLHttpRequest.status;
-
-				this.responseText = this.XMLHttpRequest.responseText;
-
-				this.onreadystatechange();
-			}
-
-			this.XMLHttpRequest.send(body);
-		}
-
-		onreadystatechange() {
+			if(response != null)
+				return response;
 				
-		}
-
-		addEventListener(type, listener) {
-			this.XMLHttpRequest.addEventListener(type, listener);
-		}
-
-		removeEventListener(type, listener) {
-			this.XMLHttpRequest.removeEventListener(type, listener);
+			this.send(body);
 		}
 	}
 
