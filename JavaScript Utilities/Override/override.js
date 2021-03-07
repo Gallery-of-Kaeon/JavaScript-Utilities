@@ -84,6 +84,10 @@ function onSend(callback) {
 		addEventListener(type, listener) {
 			this.XMLHttpRequest.addEventListener(type, listener);
 		}
+
+		removeEventListener(type, listener) {
+			this.XMLHttpRequest.removeEventListener(type, listener);
+		}
 	}
 
 	window.fetch = (uri, options) => {
