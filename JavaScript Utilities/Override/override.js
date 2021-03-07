@@ -1,5 +1,5 @@
-var defaultXMLHttpRequest = window.XMLHttpRequest;
 var defaultFetch = window.fetch;
+var DefaultXMLHttpRequest = window.XMLHttpRequest;
 
 function onLog(callback) {
 	console.log = callback;
@@ -7,9 +7,11 @@ function onLog(callback) {
 
 function onSend(callback) {
 
-	window.XMLHttpRequest = class {
+	window.XMLHttpRequest = class extends DefaultXMLHttpRequest {
 
 		constructor() {
+
+			super();
 
 			this.request = {
 				request: {
@@ -21,8 +23,6 @@ function onSend(callback) {
 				},
 				body: null
 			};
-
-			Object.assign(this, Object.create(new defaultXMLHttpRequest()));
 		}
 
 		open(method, uri, sync) {
@@ -30,14 +30,14 @@ function onSend(callback) {
 			this.request.request.method = method;
 			this.request.request.uri = uri;
 
-			this.open(method, uri, sync);
+			super.open(method, uri, sync);
 		}
 
 		setRequestHeader(name, value) {
 
 			this.request.headers[name] = value;
 
-			this.setRequestHeader(name, value);
+			super.setRequestHeader(name, value);
 		}
 
 		send(body) {
@@ -49,7 +49,7 @@ function onSend(callback) {
 			if(response != null)
 				return response;
 
-			this.send(body);
+			super.send(body);
 		}
 	}
 
