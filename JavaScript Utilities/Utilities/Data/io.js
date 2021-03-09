@@ -1,3 +1,7 @@
+var moduleDependencies = {
+	cors_api_url: "https://stormy-beach-14823.herokuapp.com/"
+};
+
 var platform = "browser";
 
 if(typeof process === 'object') {
@@ -9,8 +13,6 @@ if(typeof process === 'object') {
 		}
 	}
 }
-
-var cors_api_url = 'https://stormy-beach-14823.herokuapp.com/';
 
 function getXMLHTTP(url) {
 
@@ -130,7 +132,7 @@ if(platform == "browser") {
 			else {
 		
 				try {
-					return getXMLHTTP(cors_api_url + file);
+					return getXMLHTTP(moduleDependencies.cors_api_url + file);
 				}
 		
 				catch(error) {

@@ -15,7 +15,11 @@
 
 */
 
-var ui = require("https://raw.githubusercontent.com/Gallery-of-Kaeon/JavaScript-Utilities/master/JavaScript%20Utilities/UI/UI.js");
+var moduleDependencies = {
+	ui: "https://raw.githubusercontent.com/Gallery-of-Kaeon/JavaScript-Utilities/master/JavaScript%20Utilities/Utilities/UI/Visual/General/ui.js"
+};
+
+var ui = require(moduleDependencies.ui);
 
 function isHTMLNode(element) {
 	return element.ENTITY_NODE != null;

@@ -1,4 +1,8 @@
-var ui = require("https://raw.githubusercontent.com/Gallery-of-Kaeon/JavaScript-Utilities/master/JavaScript%20Utilities/UI/UI.js");
+var moduleDependencies = {
+	ui: "https://raw.githubusercontent.com/Gallery-of-Kaeon/JavaScript-Utilities/master/JavaScript%20Utilities/Utilities/UI/Visual/General/ui.js"
+};
+
+var ui = require(moduleDependencies.ui);
 
 function createStartScreen(element, text, callback) {
 
@@ -158,7 +162,59 @@ function getTextbox(options) {
 	return text;
 }
 
+function addTab(tabs, name, content) {
+
+	let tab = ui.create({ content: name, style: { display: "inline" } });
+	let pane = ui.create({ content: content, style: { display: "none" } });
+	
+	pane.tab_id = name;
+
+	tab.onclick = () => {
+		setTab(tabs, name);
+	}
+	
+	ui.extend(tabs.children[0], tab);
+	ui.extend(tabs.children[1], pane);
+}
+
+function setTab(tabs, id) {
+	
+	Array.from(tabs.children[1].children).forEach((child) => {
+		
+		if(child.tab_id == id)
+			ui.set(child, { style: { display: "block" } });
+		
+		else
+			ui.set(child, { style: { display: "none" } });
+	});
+}
+
+function getTabs(content, config) {
+
+	content = content != null ? content : [];
+	config = config != null ? config : { };
+
+	let menuTabs = ui.create({ style: { position: "absolute", left: "0%", top: "0%", "overflow-x": "auto" } });
+	let menu = ui.create({ content: menuTabs, style: { position: "absolute", left: "0%", top: "0%", height: "5%", width: "100%" } });
+
+	let pane = ui.create({ style: { position: "absolute", left: "0%", top: "5%", height: "95%", width: "100%" } });
+
+	let tabs = ui.create({
+		content: [menu, pane]
+	});
+
+	content.forEach((item) => { addTab(tabs, item.name, item.content); });
+
+	if(content.length > 0)
+		setTab(tabs, content[0].name);
+
+	return tabs;
+}
+
 module.exports = {
 	createStartScreen,
-	getTextbox
+	getTextbox,
+	addTab,
+	setTab,
+	getTabs
 };

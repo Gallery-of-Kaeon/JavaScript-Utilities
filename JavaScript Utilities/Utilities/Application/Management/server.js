@@ -1,5 +1,9 @@
-var http = require('http');
-var io = require("./io.js");
+var moduleDependencies = {
+	io: "https://raw.githubusercontent.com/Gallery-of-Kaeon/JavaScript-Utilities/master/JavaScript%20Utilities/Utilities/Data/io.js"
+}
+
+var http = require("http");
+var io = require(moduleDependencies.io);
 
 function startServer(port, source) {
 
