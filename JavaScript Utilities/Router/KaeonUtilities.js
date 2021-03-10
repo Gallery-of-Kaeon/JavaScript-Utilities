@@ -91,4 +91,4 @@ module.exports = (item) => {
 
 module.exports.moduleDependencies = moduleDependencies;
 
-assignLibraries(module.exports, moduleDependencies.modules.js)
+assignLibraries(module.exports, moduleDependencies.modules.js);
