@@ -67,15 +67,22 @@ var moduleDependencies = {
 	kaeonUnited: "https://raw.githubusercontent.com/Gallery-of-Kaeon/Kaeon-United/master/Kaeon%20United/Source/KaeonUnited.js"
 }
 
-function assignLibraries(object, libraries) {
+function assignLibraries(object, all, libraries) {
 
 	Object.keys(libraries).forEach((key) => {
+
+		if(typeof libraries[key] == "string") {
+
+			all[key] = () => {
+				return require(libraries[key]);
+			};
+		}
 
 		object[key] = (typeof libraries[key] == "string") ?
 			() => {
 				return require(libraries[key]);
 			} :
-			assignLibraries({ }, libraries[key]);
+			assignLibraries({ }, all, libraries[key]);
 
 	});
 
@@ -90,5 +97,6 @@ module.exports = (item) => {
 }
 
 module.exports.moduleDependencies = moduleDependencies;
+module.exports.modules = { };
 
-assignLibraries(module.exports, moduleDependencies.modules.js);
+assignLibraries(module.exports, module.exports.modules, moduleDependencies.modules.js);
