@@ -65,6 +65,13 @@ function listen(callback) {
 		}
 	}
 	
+	recognition.onend = function(event) {
+
+		setTimeout(() => {
+			listen(callback);
+		}, 100);
+	}
+	
 	recognition.start();
 
 	recognition.listening = true;
@@ -109,8 +116,8 @@ function getVoices() {
 		"Google 國語（臺灣）",
 		"Google 日本語",
 		"Google 한국의",
-		"Google 普通话（中国大陆）",
-		"Google 粤語（香港）",
+		"Google 普通话（中国大陆）",
+		"Google 粤語（香港）",
 		"Microsoft David Desktop - English (United States)",
 		"Microsoft Zira Desktop - English (United States)"
 	];
