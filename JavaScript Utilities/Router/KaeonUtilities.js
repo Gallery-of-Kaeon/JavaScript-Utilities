@@ -9,7 +9,8 @@ var moduleDependencies = {
 						cameraModules: "https://raw.githubusercontent.com/Gallery-of-Kaeon/Kaeon-ACE/master/Kaeon%20ACE/Source/API/Babylon/Modules/Units/cameraModules.js",
 						geometryModules: "https://raw.githubusercontent.com/Gallery-of-Kaeon/Kaeon-ACE/master/Kaeon%20ACE/Source/API/Babylon/Modules/Units/geometryModules.js",
 						standardModules: "https://raw.githubusercontent.com/Gallery-of-Kaeon/Kaeon-ACE/master/Kaeon%20ACE/Source/API/Babylon/Modules/Units/standardModules.js"
-					}
+					},
+					utilities: "https://raw.githubusercontent.com/Gallery-of-Kaeon/Kaeon-ACE/master/Kaeon%20ACE/Source/API/Babylon/Modules/Utilities/moduleUtilities.js"
 				}
 			},
 			philosophersStone: {
