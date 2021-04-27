@@ -75,36 +75,50 @@ var moduleDependencies = {
 	kaeonUnited: "https://raw.githubusercontent.com/Gallery-of-Kaeon/Kaeon-United/master/Kaeon%20United/Source/KaeonUnited.js"
 }
 
-function assignLibraries(object, all, libraries) {
+function getModule(modules, item) {
 
-	Object.keys(libraries).forEach((key) => {
+	item = item.replace(/\s+/g, '').toLowerCase();
 
-		if(typeof libraries[key] == "string") {
+	let keys = Object.keys(modules);
 
-			all[key] = () => {
-				return require(libraries[key]);
-			};
+	for(let i = 0; i < keys.length; i++) {
+
+		let value = modules[keys[i]];
+
+		if(typeof value == "string") {
+
+			let key = keys[i].replace(/\s+/g, '').toLowerCase();
+	
+			if(item == key)
+				return value;
 		}
 
-		object[key] = (typeof libraries[key] == "string") ?
-			() => {
-				return require(libraries[key]);
-			} :
-			assignLibraries({ }, all, libraries[key]);
+		else {
 
-	});
+			let path = getModule(value, item);
 
-	return object;
+			if(path != null)
+				return path;
+		}
+	}
+
+	return null;
 }
 
 module.exports = (item) => {
+
+	if(item == null)
+		return moduleDependencies;
+
+	if(typeof item == "string") {
+
+		let path = getModule(moduleDependencies, item);
+		console.log(path)
+
+		return path != null ? require(path) : null;
+	}
 
 	Object.values(moduleDependencies.modules.one.interfaces).forEach((value) => {
 		require(value)(item);
 	});
 }
-
-module.exports.moduleDependencies = moduleDependencies;
-module.exports.modules = { };
-
-assignLibraries(module.exports, module.exports.modules, moduleDependencies.modules.js);
