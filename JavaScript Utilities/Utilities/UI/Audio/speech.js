@@ -14,13 +14,19 @@ function speak(text, settings) {
 				return;
 		
 			settings = settings != null ? settings : { };
+
+			settings.voice =
+				settings.voice != null ?
+					settings.voice :
+					"Microsoft David Desktop - English (United States)";
 		
 			let voices = window.speechSynthesis.getVoices();
 			let utterance = new SpeechSynthesisUtterance(text);
 		
-			for(let i = 0; i < voices.length && settings.voice != null; i++) {
+			for(let i = 0; i < voices.length; i++) {
 		
-				if(voices[i].voiceURI.toLowerCase() == settings.voice.trim().toLowerCase()) {
+				if(voices[i].voiceURI.toLowerCase() ==
+					settings.voice.trim().toLowerCase()) {
 		
 					utterance.voice = voices[i];
 		
