@@ -19,14 +19,15 @@ function speak(text, settings) {
 				settings.voice != null ?
 					settings.voice :
 					"Microsoft David Desktop - English (United States)";
+
+			settings.voice = settings.voice.trim().toLowerCase();
 		
 			let voices = window.speechSynthesis.getVoices();
 			let utterance = new SpeechSynthesisUtterance(text);
 		
 			for(let i = 0; i < voices.length; i++) {
 		
-				if(voices[i].voiceURI.toLowerCase() ==
-					settings.voice.trim().toLowerCase()) {
+				if(voices[i].voiceURI.toLowerCase() == settings.voice) {
 		
 					utterance.voice = voices[i];
 		
