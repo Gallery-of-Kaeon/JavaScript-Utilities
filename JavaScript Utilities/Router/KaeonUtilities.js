@@ -113,7 +113,6 @@ module.exports = (item) => {
 	if(typeof item == "string") {
 
 		let path = getModule(moduleDependencies, item);
-		console.log(path)
 
 		return path != null ? require(path) : null;
 	}
