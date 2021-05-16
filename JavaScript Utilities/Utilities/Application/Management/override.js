@@ -85,7 +85,7 @@ function onSend(callback) {
 		let response = callback(request);
 
 		return callback == null ?
-			defaultFetch(url) :
+			defaultFetch(url, options) :
 			new Promise(
 				(resolve) => {
 					resolve({ text: () => { return response; } });
