@@ -18,7 +18,7 @@ function speak(text, settings) {
 			settings.voice =
 				settings.voice != null ?
 					settings.voice :
-					"Microsoft David Desktop - English (United States)";
+					"Microsoft Mark - English (United States)";
 
 			settings.voice = settings.voice.trim().toLowerCase();
 		
@@ -123,10 +123,11 @@ function getVoices() {
 		"Google 國語（臺灣）",
 		"Google 日本語",
 		"Google 한국의",
-		"Google 普通话（中国大陆）",
-		"Google 粤語（香港）",
-		"Microsoft David Desktop - English (United States)",
-		"Microsoft Zira Desktop - English (United States)"
+		"Google 普通话（中国大陆）",
+		"Google 粤語（香港）",
+		"Microsoft David - English (United States)",
+		"Microsoft Mark - English (United States)",
+		"Microsoft Zira - English (United States)"
 	];
 }
 
